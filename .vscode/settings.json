@@ -1,0 +1,12 @@
+{
+    "python.formatting.provider": "yapf",
+    "editor.formatOnSave": true,
+    "python.linting.banditEnabled": false,
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true,
+    "python.linting.pycodestyleArgs": [
+        "--extension-pkg-whitelist='pydantic'",
+        "--extension-pkg-whitelist='lxml'",
+        "--disable=C0116,C0115,C0114"
+    ]
+}

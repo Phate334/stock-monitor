@@ -1,0 +1,38 @@
+version: '3.7'
+services:
+    db:
+        image: mariadb:10
+        environment:
+            - MYSQL_ROOT_PASSWORD=${DB_PASS}
+            - MYSQL_DATABASE=${DB_BASE}
+        ports:
+            - "3306:3306"
+        volumes:
+            - D:\\stock\db\:/var/lib/mysql
+        logging:
+            options:
+                max-size: 10m
+                max-file: "3"
+        networks: 
+            - server_net
+        env_file:
+            - .env
+    metabase:
+        image: metabase/metabase
+        depends_on:
+            - db
+        environment:
+            - MB_DB_FILE=/metabase-data/metabase.db
+        logging:
+            options:
+                max-size: 10m
+                max-file: "3"
+        volumes:
+            - D:\\stock\metabase\:/metabase-data
+        ports:
+            - "3000:3000"
+        networks: 
+            - server_net
+
+networks: 
+  server_net:

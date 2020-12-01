@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "editorconfig.editorconfig",
+    "codezombiech.gitignore",
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "humao.rest-client"
+  ]
+}

@@ -1,0 +1,9 @@
+[MASTER]
+disable=
+    C0114,
+    E0213,
+    missing-docstring
+
+extension-pkg-whitelist=
+    pydantic,
+    lxml
