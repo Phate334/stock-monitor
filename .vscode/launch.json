@@ -11,7 +11,6 @@
       "program": "stock-monitor.py",
       "args": [
         "etf",
-        "2020"
       ],
       "console": "integratedTerminal"
     },

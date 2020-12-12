@@ -1,0 +1,9 @@
+def func_helper(parameter_type, return_type=None):
+    def decorator(function):
+        def wrapper(*args, **kwargs):
+            result = function(parameter_type(**kwargs))
+            return return_type(**result) if return_type else result
+
+        return wrapper
+
+    return decorator
