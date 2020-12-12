@@ -146,7 +146,7 @@ class FundClearDetailFetcher:
         with open(self.data_path, 'w', encoding='utf-8') as f:
             f.write(self.data.json(ensure_ascii=False))
 
-    def fetch(self, fund_id: str):
+    def fetch(self, fund_id: str) -> FundClearDetail:
         fund = self.search(fund_id)
         if not fund:
             res = self.session.get(self.DETAIL_URL.format(fund_id))

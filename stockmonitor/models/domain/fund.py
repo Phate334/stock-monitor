@@ -14,7 +14,7 @@ _SITCA_EXPENSE_ROW = [
 
 FUND_CLEAR_TITLE_MAP = {
     '基金統編': 'tax_id',
-    '基金中文名稱': 'mandarin',
+    '基金中文名稱': 'name',
     '投信事業': 'company',
     '基金ISINCODE': 'isincode',
     '受益憑證代號': 'stock_code',
@@ -62,7 +62,7 @@ class SITCAFormValue(BaseModel):
 
 class FundClearDetail(BaseModel):
     tax_id: str
-    mandarin: str = None
+    name: str = None
     company: str = None
     isincode: str = None
     stock_code: str = None
@@ -76,6 +76,8 @@ class FundClearDetail(BaseModel):
 
     @validator('start', 'scale_update', pre=True)
     def cleanup_date(cls, date: str):
+        if not date:
+            return None
         res = TW_DATE_PATTERN.match(date)
         if res:
             return '{}-{}-{}'.format(res.group(1), res.group(2), res.group(3))
