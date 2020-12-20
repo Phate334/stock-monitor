@@ -42,10 +42,10 @@ class StockMonitor:
     def finmind(self):
         f = FinMindFetcher()
         logger.info(
-            f.taiwan_stock_price(dataset='TaiwanStockPrice',
-                                 stock_id='2330',
-                                 date='2020-12-01',
-                                 end_date='2020-12-02'))
+            f.fetch(dataset='TaiwanStockPrice',
+                    stock_id='2330',
+                    date='2020-12-01',
+                    end_date='2020-12-02'))
 
 
 if __name__ == '__main__':

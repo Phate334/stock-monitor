@@ -11,8 +11,5 @@ class FinMindFetcher:
         self.session = HTMLSession()
 
     @func_helper(Parameters)
-    def taiwan_stock_price(self, parms: Parameters):
-        return self._fetch(parms)
-
-    def _fetch(self, parms: Parameters):
-        return self.session.get(self.BASE_URL, params=parms).json()
+    def fetch(self, params):
+        return self.session.get(self.BASE_URL, params=params).json()
