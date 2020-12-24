@@ -1,3 +1,4 @@
+import re
 from datetime import datetime
 
 from pydantic import BaseModel, validator
@@ -28,15 +29,18 @@ class Stock(BaseModel):
 
 
 class StockPercentage(Stock):
-    order: int
-    percent: float
+    order: int = None
+    shares_outstanding: int = None
+    percent: float = None
 
     @validator('order', pre=True)
     def order_number(cls, in_) -> int:
-        return int(in_)
+        return int(in_.replace(','))
 
     @validator('percent', pre=True)
     def percent_number(cls, in_) -> float:
-        if isinstance(in_, str) and in_[-1] == '%':
-            return float(in_[:-1])
+        if isinstance(in_, str):
+            if in_[-1] == '%':
+                return float(in_[:-1])
+            return float(in_)
         return in_

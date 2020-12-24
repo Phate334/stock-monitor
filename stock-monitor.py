@@ -6,8 +6,8 @@ from fire import Fire
 from loguru import logger
 
 from stockmonitor.core.config import get_settings
-from stockmonitor.fetch.fund import SITCAExpenseFetcher, FundClearDetailFetcher
-from stockmonitor.fetch.finmind import FinMindFetcher
+from stockmonitor import (SITCAExpenseFetcher, FundClearDetailFetcher,
+                          FinMindFetcher, MoneyDJFetcher)
 from stockmonitor.utils.etf import to_etf
 
 settings = get_settings()
@@ -46,6 +46,12 @@ class StockMonitor:
                     stock_id='2330',
                     date='2020-12-01',
                     end_date='2020-12-02'))
+
+    @logger.catch
+    def etfcontent(self, stock_id: str):
+        logger.warning('remember update twstock codes.')
+        mdj = MoneyDJFetcher()
+        etf_content = mdj.fetch_etf_content(stock_id)
 
 
 if __name__ == '__main__':
