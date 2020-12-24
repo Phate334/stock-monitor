@@ -1,4 +1,5 @@
 from pathlib import Path
+from time import sleep
 
 from twstock import codes
 from requests_html import HTMLSession
@@ -26,13 +27,10 @@ class GoodInfoFetcher:
         result = next((s for s in self.basic.stocks if s.code == stock_id),
                       None)
         if not result:
-            try:
-                result = self._download_basic(stock_id)
-            except IndexError as e:
-                self._save_basic()
-                raise RuntimeError(e)
+            result = self._download_basic(stock_id)
             self.basic.stocks.append(result)
             self._save_basic()
+
         return result
 
     def _download_basic(self, stock_id: str) -> GoodInfoBasic:
@@ -43,6 +41,7 @@ class GoodInfoFetcher:
             for tr in html.find('tr,td[bgcolor="white"]')
             if '發行股數' in tr.find('td', first=True).text
         ][0].split('\xa0')[0].replace(',', '')
+        sleep(10)
 
         return GoodInfoBasic(code=stock_id,
                              name=codes[stock_id].name,

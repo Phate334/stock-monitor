@@ -1,4 +1,3 @@
-from time import sleep
 from datetime import datetime
 from pathlib import Path
 
@@ -59,13 +58,15 @@ class StockMonitor:
             f.write('code,name,volume,etf_percent,shares,stock_percent\n')
             csv_pattern = '{},{},{},{},{},{}\n'
             for stock in etf_content.stocks:
-                basic = gi.fetch_basic(stock.code)
-                sleep(10)
-                f.write(
-                    csv_pattern.format(
-                        stock.code, stock.name, stock.volume, stock.percent,
-                        basic.shares,
-                        '{:.2%}'.format(stock.volume / basic.shares)))
+                try:
+                    basic = gi.fetch_basic(stock.code)
+                    f.write(
+                        csv_pattern.format(
+                            stock.code, stock.name, stock.volume,
+                            stock.percent, basic.shares,
+                            '{:.2%}'.format(stock.volume / basic.shares)))
+                except:
+                    ...
 
 
 if __name__ == '__main__':
