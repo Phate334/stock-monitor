@@ -1,14 +1,15 @@
+from time import sleep
 from datetime import datetime
 from pathlib import Path
-from stockmonitor.models.domain.etf import ETFList
 
 from fire import Fire
 from loguru import logger
 
 from stockmonitor.core.config import get_settings
 from stockmonitor import (SITCAExpenseFetcher, FundClearDetailFetcher,
-                          FinMindFetcher, MoneyDJFetcher)
+                          FinMindFetcher, MoneyDJFetcher, GoodInfoFetcher)
 from stockmonitor.utils.etf import to_etf
+from stockmonitor.models.domain.etf import ETFList
 
 settings = get_settings()
 
@@ -50,8 +51,21 @@ class StockMonitor:
     @logger.catch
     def etfcontent(self, stock_id: str):
         logger.warning('remember update twstock codes.')
+        stock_id = str(stock_id)
         mdj = MoneyDJFetcher()
+        gi = GoodInfoFetcher()
         etf_content = mdj.fetch_etf_content(stock_id)
+        with open(f'{stock_id}.csv', 'w', encoding='utf-8') as f:
+            f.write('code,name,volume,etf_percent,shares,stock_percent\n')
+            csv_pattern = '{},{},{},{},{},{}\n'
+            for stock in etf_content.stocks:
+                basic = gi.fetch_basic(stock.code)
+                sleep(10)
+                f.write(
+                    csv_pattern.format(
+                        stock.code, stock.name, stock.volume, stock.percent,
+                        basic.shares,
+                        '{:.2%}'.format(stock.volume / basic.shares)))
 
 
 if __name__ == '__main__':

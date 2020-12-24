@@ -17,7 +17,9 @@ class Stock(BaseModel):
 
     @validator('start', pre=True)
     def start_date(cls, date_: str) -> datetime:
-        return datetime.strptime(date_, '%Y/%m/%d')
+        if date_:
+            return datetime.strptime(date_, '%Y/%m/%d')
+        return date_
 
     @validator('market', pre=True)
     def market_enum(cls, in_: str) -> Market:
@@ -30,7 +32,7 @@ class Stock(BaseModel):
 
 class StockPercentage(Stock):
     order: int = None
-    shares_outstanding: int = None
+    volume: int = None
     percent: float = None
 
     @validator('order', pre=True)

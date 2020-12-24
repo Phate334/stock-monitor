@@ -10,7 +10,8 @@
       "request": "launch",
       "program": "stock-monitor.py",
       "args": [
-        "etf",
+        "etfcontent",
+        "0050"
       ],
       "console": "integratedTerminal"
     },

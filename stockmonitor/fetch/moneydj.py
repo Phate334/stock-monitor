@@ -30,14 +30,14 @@ class MoneyDJFetcher:
             name = row.find('.col05', first=True).text
             code = next(
                 (codes[c].code for c in codes if codes[c].name == name))
-            shares = int(
+            volume = int(
                 re.sub(NUM_PATTERN, '',
                        row.find('.col06', first=True).text)) * 10
             per = row.find('.col07', first=True).text
             result.append(
                 StockPercentage(code=code,
                                 name=name,
-                                shares_outstanding=shares,
+                                volume=volume,
                                 percent=per))
         return result
 
