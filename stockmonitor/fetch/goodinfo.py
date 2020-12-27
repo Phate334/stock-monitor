@@ -11,12 +11,15 @@ from stockmonitor.models.domain.goodinfo import GoodInfoBasic, GoodInfoBasicTabl
 class GoodInfoFetcher:
     BASIC_URL = 'https://goodinfo.tw/StockInfo/BasicInfo.asp?STOCK_ID={}'
 
-    def __init__(self, data_dir: Path = Path('data')) -> None:
+    def __init__(self,
+                 data_dir: Path = Path('data'),
+                 sleep_time: int = 10) -> None:
         self.session = HTMLSession()
         self.goodinfo_data = data_dir.joinpath('goodinfo')
         self.goodinfo_data.mkdir(parents=True, exist_ok=True)
         self.basic_path = self.goodinfo_data.joinpath('basic.json')
         self.basic = None
+        self.sleep_time = sleep_time
 
     def fetch_basic(self, stock_id: str) -> GoodInfoBasic:
         if not self.basic:
@@ -41,7 +44,7 @@ class GoodInfoFetcher:
             for tr in html.find('tr,td[bgcolor="white"]')
             if '發行股數' in tr.find('td', first=True).text
         ][0].split('\xa0')[0].replace(',', '')
-        sleep(10)
+        sleep(self.sleep_time)
 
         return GoodInfoBasic(code=stock_id,
                              name=codes[stock_id].name,

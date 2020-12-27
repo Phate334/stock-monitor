@@ -19,6 +19,8 @@ class Settings(BaseSettings):
     log_rotation: str = '100 MB'
     log_retention: str = '7 days'
 
+    goodinfo_sleep: int = 10
+
     class Config:
         env_file_encoding = 'utf-8'
 
