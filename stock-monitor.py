@@ -1,8 +1,11 @@
 from datetime import datetime
 from pathlib import Path
+from itertools import zip_longest
 
 from fire import Fire
 from loguru import logger
+from rich.console import Console
+from rich.table import Table
 
 from stockmonitor.core.config import get_settings
 from stockmonitor import (SITCAExpenseFetcher, FundClearDetailFetcher,
@@ -66,7 +69,30 @@ class StockMonitor:
                             stock.percent, basic.shares,
                             '{:.2%}'.format(stock.volume / basic.shares)))
                 except:
-                    ...
+                    logger.error(stock)
+
+    @logger.catch
+    def etfdiff(self, etf_primary: str, etf_secondary: str):
+        mdj = MoneyDJFetcher()
+        table = Table(title=f'{etf_primary} V.S. {etf_secondary}')
+        table.add_column('No.')
+        table.add_column(etf_primary)
+        table.add_column(etf_secondary)
+        primary = mdj.fetch_etf_content(etf_primary)
+        secondary = mdj.fetch_etf_content(etf_secondary)
+        pm_stocks = sorted(primary.stocks,
+                           key=lambda x: (x.code in secondary, x.name),
+                           reverse=True)
+        sec_stocks = sorted(secondary.stocks,
+                            key=lambda x: (x.code in primary, x.name),
+                            reverse=True)
+
+        for i, (p, s) in enumerate(zip_longest(pm_stocks, sec_stocks)):
+            table.add_row(str(i),
+                          f'{p.name}({p.code}) {p.percent}' if p else '',
+                          f'{s.name}({s.code}) {s.percent}' if s else '')
+        console = Console()
+        console.print(table)
 
 
 if __name__ == '__main__':
