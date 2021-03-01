@@ -94,6 +94,12 @@ class StockMonitor:
         console = Console()
         console.print(table)
 
+    @logger.catch
+    def shares(slef, code: str):
+        gi = GoodInfoFetcher()
+        basic = gi.fetch_basic(str(code))
+        logger.info(basic.shares)
+
 
 if __name__ == '__main__':
     logger.add(Path(settings.log_path).joinpath('stock-monitor.log'),

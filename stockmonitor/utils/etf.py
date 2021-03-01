@@ -7,4 +7,5 @@ def to_etf(fund_detail: FundClearDetail, expense: FundExpense) -> ETF:
                name=fund_detail.name,
                company=fund_detail.company,
                start=fund_detail.start,
-               total_ratio=expense.total_ratio)
+               total_ratio=expense.total_ratio,
+               type_code=expense.type_code)

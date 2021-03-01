@@ -8,6 +8,7 @@ class ETF(BaseModel):
     company: str
     start: str
     total_ratio: str
+    type_code: str
 
 
 class ETFList(BaseModel):
